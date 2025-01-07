@@ -104,7 +104,7 @@ spec:
         url: ./manifests
         copyWithoutTemplating: []
         values:
-          component_id: ${{parameters.namespace}}-wheres-teddy-app
+          component_id: ${{parameters.namespace}}-agent-hyperscalers-app
           description: ${{parameters.description}}
           destination: https://github.com/${{parameters.githubOrg}}/${{parameters.namespace}}-agent-hyperscalers-gitops
           source_repository: https://github.com/${{parameters.githubOrg}}/${{parameters.namespace}}-agent-hyperscalers
