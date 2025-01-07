@@ -1,0 +1,7 @@
+---
+namespace: "vllm-"${{values.namespace}}
+
+description: "Agent VLLM namespace"
+
+displayName: "Agent VLLM namespace"
+
