@@ -8,6 +8,7 @@ metadata:
     sidecar.istio.io/rewriteAppHTTPProbers: "true"
     argocd.argoproj.io/compare-options: IgnoreExtraneous
     argocd.argoproj.io/sync-options: Prune=false
+    security.opendatahub.io/enable-auth: "true"
   labels:
     opendatahub.io/dashboard: "true"
   name: {{ $.Values.name }}
