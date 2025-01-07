@@ -10,6 +10,10 @@ $ cd multicloud-gitops
 # Adjust secrets as needed
 $ cp values-secret.yaml.template ~/.config/hybrid-cloud-patterns/values-secret-multicloud-gitops.yaml
 $ ./pattern.sh make install 
+
+# Copy admin.password from secret hub-gitops-cluster at multiclod-gitops-hub namespace and replace it on values-secret.yaml
+$ cp values-secret.yaml.template ~/.config/hybrid-cloud-patterns/values-secret-multicloud-gitops.yaml
+$ ./pattern.sh make load-secrets
 ```
 
 Then, you can import the template into your deployed Red Hat Developer Hub and instantiate it. It will create
