@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Values.namespace }}
+  name: {{ $.Values.namespace }}
   annotations:
-    openshift.io/description: "VLLM Workspace"
-    openshift.io/display-name: 'VLLM Workspace'
+    openshift.io/description: {{ $.Values.description }}
+    openshift.io/display-name: {{ $.Values.displayName }}
   labels:
-    kubernetes.io/metadata.name: "vllm-ns"
+    kubernetes.io/metadata.name: {{ $.Values.namespace }}
     modelmesh-enabled: 'false'
     opendatahub.io/dashboard: 'true'

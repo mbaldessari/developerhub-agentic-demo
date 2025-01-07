@@ -10,8 +10,8 @@ metadata:
     argocd.argoproj.io/sync-options: Prune=false
   labels:
     opendatahub.io/dashboard: "true"
-  name: {{ .Values.name }}
-  namespace: {{ .Values.namespace }}
+  name: {{ $.Values.name }}
+  namespace: {{ $.Values.namespace }}
 spec:
   predictor:
     maxReplicas: 1
@@ -30,5 +30,5 @@ spec:
           nvidia.com/gpu: '1'
       runtime: vllm-runtime
       storage:
-        key: aws-connection-{{ Values.bucketSecret }}
-        path: {{ .Values.modelStoragePath }}
+        key: aws-connection-{{ $.Values.bucketSecret }}
+        path: {{ $.Values.modelStoragePath }}
