@@ -1,7 +1,7 @@
 ---
 name: vllm
 
-namespace: "vllm-"${{values.namespace}}
+namespace: vllm-${{values.namespace}}
 
 description: "Agent VLLM namespace"
 
