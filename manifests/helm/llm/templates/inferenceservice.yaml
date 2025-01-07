@@ -18,7 +18,7 @@ spec:
     minReplicas: 1
     model:
       modelFormat:
-        name: pytorch
+        name: vLLM
       name: ""
       resources:
         limits:
@@ -28,7 +28,7 @@ spec:
         requests:
           cpu: "4"
           nvidia.com/gpu: '1'
-      runtime: vllm-runtime
+      runtime: {{ $.Values.name }}
       storage:
         key: aws-connection-{{ $.Values.bucketSecret }}
         path: {{ $.Values.modelStoragePath }}

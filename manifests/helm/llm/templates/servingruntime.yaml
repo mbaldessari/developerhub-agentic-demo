@@ -1,0 +1,49 @@
+apiVersion: serving.kserve.io/v1alpha1
+kind: ServingRuntime
+metadata:
+  annotations:
+    opendatahub.io/accelerator-name: ""
+    opendatahub.io/apiProtocol: REST
+    opendatahub.io/recommended-accelerators: '["nvidia.com/gpu"]'
+    opendatahub.io/template-display-name: vLLM ServingRuntime for KServe
+    opendatahub.io/template-name: vllm-runtime
+    openshift.io/display-name: {{ $.Values.name }}
+  creationTimestamp: "2025-01-07T15:03:21Z"
+  generation: 1
+  labels:
+    opendatahub.io/dashboard: "true"
+  name: {{ $.Values.name }}
+  namespace: {{ $.Values.namespace }}
+spec:
+  annotations:
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8080"
+  containers:
+  - args:
+    - --port=8080
+    - --model=/mnt/models
+    - --served-model-name={{.Name}}
+    command:
+    - python
+    - -m
+    - vllm.entrypoints.openai.api_server
+    env:
+    - name: HF_HOME
+      value: /tmp/hf_home
+    image: quay.io/modh/vllm@sha256:c86ff1e89c86bc9821b75d7f2bbc170b3c13e3ccf538bf543b1110f23e056316
+    name: kserve-container
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+    volumeMounts:
+    - mountPath: /dev/shm
+      name: shm
+  multiModel: false
+  supportedModelFormats:
+  - autoSelect: true
+    name: vLLM
+  volumes:
+  - emptyDir:
+      medium: Memory
+      sizeLimit: 2Gi
+    name: shm
