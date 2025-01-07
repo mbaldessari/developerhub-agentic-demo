@@ -1,7 +1,20 @@
 ---
+name: vllm
+
 namespace: "vllm-"${{values.namespace}}
 
 description: "Agent VLLM namespace"
 
 displayName: "Agent VLLM namespace"
 
+modelStoragePath: ${{values.model_path}}
+
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore
+
+s3:
+  default_endpoint: http://minio-service.minio-ns.svc.cluster.local:9000
+  default_region: none
+
+bucketSecret: models

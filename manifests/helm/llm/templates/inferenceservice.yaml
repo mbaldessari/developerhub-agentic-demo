@@ -1,0 +1,34 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  annotations:
+    openshift.io/display-name: vllm
+    serving.knative.openshift.io/enablePassthrough: "true"
+    sidecar.istio.io/inject: "true"
+    sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
+  labels:
+    opendatahub.io/dashboard: "true"
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  predictor:
+    maxReplicas: 1
+    minReplicas: 1
+    model:
+      modelFormat:
+        name: pytorch
+      name: ""
+      resources:
+        limits:
+          cpu: "8"
+          memory: 24Gi
+          nvidia.com/gpu: '1'
+        requests:
+          cpu: "4"
+          nvidia.com/gpu: '1'
+      runtime: vllm-runtime
+      storage:
+        key: aws-connection-{{ Values.bucketSecret }}
+        path: {{ .Values.modelStoragePath }}
