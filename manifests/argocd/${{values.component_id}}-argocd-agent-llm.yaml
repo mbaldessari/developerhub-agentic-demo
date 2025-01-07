@@ -2,12 +2,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ${{values.component_id}}-dev
+  name: ${{values.component_id}}-llm
   namespace: multicloud-gitops-hub
   labels:
-    argocd/app-name: ${{values.component_id}}-dev
+    argocd/app-name: ${{values.component_id}}-llm
   annotations:
-    argocd/app-name: ${{values.component_id}}-dev
+    argocd/app-name: ${{values.component_id}}-llm
 spec:
   project: default
   source:

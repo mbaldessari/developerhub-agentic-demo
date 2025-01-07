@@ -1,0 +1,28 @@
+---
+name: agent
+
+namespace: ${{values.namespace}}
+
+label:
+- app: agent-app
+
+replicaCount: 1
+podAnnotations: {}
+imagePullSecrets: []
+nodeSelector: {}
+tolerations: []
+affinity: {}
+image:
+  repository: ${{values.image_host}}/${{values.image_name}}
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ${{values.image_tag}}
+
+service:
+  type: ClusterIP
+  port: 8080
+  name: http
+
+route: 
+  #host: chart-example.local
+  path: /

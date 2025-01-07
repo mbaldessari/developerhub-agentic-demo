@@ -1,0 +1,14 @@
+{{- with .Values.service }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Values.name }}-svc
+  namespace: {{ $.Values.namespace}}
+spec:
+  type: {{ .type }}
+  ports:
+    - port: {{ .port }}
+      protocol: TCP
+  selector:
+    {{ $.Values.label }}
+{{- end }}

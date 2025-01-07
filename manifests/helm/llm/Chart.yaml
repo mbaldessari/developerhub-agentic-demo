@@ -1,4 +1,4 @@
 apiVersion: v2
 description: A Helm chart to deploy model in OpenShift AI with vLLM
-name: vllm-ns
+name: llm-template
 version: 0.0.1
