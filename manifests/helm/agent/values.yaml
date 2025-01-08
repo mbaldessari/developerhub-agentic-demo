@@ -4,7 +4,7 @@ name: agent
 namespace: ${{values.namespace}}
 
 label:
-- app: agent-app
+  app: agent-app
 
 replicaCount: 1
 podAnnotations: {}
