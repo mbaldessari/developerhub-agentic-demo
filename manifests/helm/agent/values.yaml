@@ -3,7 +3,7 @@ name: agent
 
 namespace: ${{values.namespace}}
 
-label:
+labels:
   app: agent-app
 
 replicaCount: 1
@@ -22,6 +22,8 @@ service:
   type: ClusterIP
   port: 8080
   name: http
+  labels:
+    app: agent-app
 
 route: 
   #host: chart-example.local

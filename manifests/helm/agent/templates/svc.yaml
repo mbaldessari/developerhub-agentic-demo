@@ -10,7 +10,7 @@ spec:
     - port: {{ .port }}
       protocol: TCP
   selector:
-    {{- range $key, $value := .Values.label }}
+    {{- range $key, $value := .labels }}
     {{ $key }}: {{ $value }}
     {{- end }}
 {{- end }}

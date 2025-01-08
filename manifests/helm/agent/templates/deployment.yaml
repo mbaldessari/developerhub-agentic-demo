@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ $.Values.namespace}}
   labels:
-    {{- range $key, $value := .Values.label }}
+    {{- range $key, $value := .Values.labels }}
     {{ $key }}: {{ $value }}
     {{- end }}
     app.openshift.io/runtime: python
@@ -12,7 +12,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- range $key, $value := .Values.label }}
+      {{- range $key, $value := .Values.labels }}
       {{ $key }}: {{ $value }}
       {{- end }}
   template:
@@ -22,7 +22,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- range $key, $value := .Values.label }}
+        {{- range $key, $value := .Values.labels }}
         {{ $key }}: {{ $value }}
         {{- end }}
     spec:
