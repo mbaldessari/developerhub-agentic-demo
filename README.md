@@ -35,7 +35,7 @@ After everything is deployed, there is a need for a manual step (for now):
   ...
     - name: llm-keys
       fields:
-      - name: llm-endpoint
+      - name: endpoint
         value: endpoint-url   # CHANGE ME
       - name: token
         value: super_secret_token   # CHANGE ME
