@@ -28,6 +28,8 @@ service:
 route: 
   #host: chart-example.local
   path: /
+  labels:
+    app: agent-app
 
 secretStore:
   name: vault-backend
