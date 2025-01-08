@@ -1,0 +1,23 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: git-clone
+spec:
+  params:
+    - name: repo-url
+      description: The git repository URL to clone
+      type: string
+    - name: branch-name
+      description: The branch to checkout
+      type: string
+      default: main
+  steps:
+    - name: clone
+      image: registry.access.redhat.com/ubi9/ubi:latest
+      script: |
+        #!/bin/sh
+        yum install -y git
+        git clone -b $(params.branch-name) https://$(params.repo-url).git
+  workspaces:
+    - name: shared-folder
