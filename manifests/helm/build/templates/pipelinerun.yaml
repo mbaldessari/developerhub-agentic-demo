@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: {{ .Values.name }}-pipelinerun
+  labels:
+    backstage.io/kubernetes-id: ${{values.component_id}}
+spec:
+  pipelineRef:
+    name: {{ .Values.name }}-pipeline
+  podTemplate:
+    securityContext:
+      fsGroup: 65532
+  workspaces:
+  - name: shared-folder
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
