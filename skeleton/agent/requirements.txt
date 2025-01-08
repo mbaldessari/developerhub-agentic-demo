@@ -1,2 +1,9 @@
-Flask[async]
-request
+#langgraph==0.1.0  # Adjust version based on the latest available
+langgraph
+#gradio==3.35.2    # Adjust version based on the latest available
+gradio
+chromadb==0.4.3   # For VectorDB (e.g., ChromaDB)
+#openai==0.28.0    # For OpenAI API (replace with relevant LLM API library)
+openai
+#requests==2.31.0  # HTTP requests
+requests

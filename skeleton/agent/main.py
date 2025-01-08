@@ -1,10 +1,6 @@
-from flask import Flask
+from ui import create_ui
 
-app = Flask(__name__)
-
-@app.route('/')
-def hello():
-    return 'Hello, World!'
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+if __name__ == "__main__":
+    # Create and launch the Gradio UI
+    ui = create_ui()
+    ui.launch(server_name="0.0.0.0", server_port=8080)

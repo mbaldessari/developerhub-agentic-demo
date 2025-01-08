@@ -23,3 +23,24 @@ Then, you can import the template into your deployed Red Hat Developer Hub and i
   - Building pipeline for the agent image
   - LLM at OpenShift AI
   - Agent at OpenShift
+
+After everything is deployed, there is a need for a manual step (for now):
+- Copy the token and the inference endpoint from the deployed model on OpenShift AI
+- (Alternatively you can point to a different vLLM deployment if you wish)
+- Make use of values-secret.yaml.template to create the information with it and update the vault so that the secret gets created in the agent application namespace:
+
+  ```bash
+  # Update the secret template with the information requested
+  $ cat values-secret.yaml.template
+  ...
+    - name: llm-keys
+      fields:
+      - name: llm-endpoint
+        value: endpoint-url   # CHANGE ME
+      - name: token
+        value: super_secret_token   # CHANGE ME
+
+  # Update the vaults
+  $ cp values-secret.yaml.template ~/.config/hybrid-cloud-patterns/values-secret-multicloud-gitops.yaml
+  $ ./pattern.sh make load-secrets
+  ```
