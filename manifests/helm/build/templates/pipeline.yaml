@@ -32,11 +32,10 @@ spec:
         - name: revision
           value: $(params.source-branch)
       taskRef:
-        kind: ClusterTask
         name: git-clone
       workspaces:
         - name: output
-          workspace: source-folder
+          workspace: shared-folder
     - name: build-and-push
       params:
         - name: IMAGE
@@ -46,10 +45,9 @@ spec:
       runAfter:
         - git-clone
       taskRef:
-        kind: ClusterTask
         name: buildah
       workspaces:
-        - name: source
-          workspace: source-folder
+        - name: output
+          workspace: shared-folder
   workspaces:
-    - name: source-folder
+    - name: shared-folder
