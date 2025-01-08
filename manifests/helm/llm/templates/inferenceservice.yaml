@@ -24,11 +24,11 @@ spec:
       resources:
         limits:
           cpu: "8"
-          memory: 24Gi
-          nvidia.com/gpu: '1'
+          #memory: 24Gi
+          #nvidia.com/gpu: '1'
         requests:
           cpu: "4"
-          nvidia.com/gpu: '1'
+          #nvidia.com/gpu: '1'
       runtime: {{ $.Values.name }}
       storage:
         key: aws-connection-{{ $.Values.bucketSecret }}
