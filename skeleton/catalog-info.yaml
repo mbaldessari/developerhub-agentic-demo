@@ -11,7 +11,7 @@ metadata:
     backstage.io/kubernetes-namespace: ${{values.namespace}}
     backstage.io/techdocs-ref: dir:.
     github.com/project-slug: ${{values.githubOrg}}/${{values.repoName}}
-    janus-idp.io/tekton-enabled: 'true'
+    tekton.dev/cicd : "true"
   tags:
     - python
     - genai

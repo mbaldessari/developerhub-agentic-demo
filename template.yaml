@@ -37,7 +37,7 @@ spec:
           title: Cluster Id
           type: string
           description: Id of the cluster
-          default: .apps.cluster-rrxch.rrxch.sandbox1098.opentlc.com
+          default: .apps.cluster-lwhkm.lwhkm.sandbox3225.opentlc.com
         namespace:
           title: Namespace
           type: string
