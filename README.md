@@ -11,17 +11,7 @@ $ cd multicloud-gitops
 $ cp values-secret.yaml.template ~/.config/hybrid-cloud-patterns/values-secret-multicloud-gitops.yaml
 $ ./pattern.sh make install 
 
-# Copy admin.password from secret hub-gitops-cluster at multiclod-gitops-hub namespace and replace it on values-secret.yaml
-$ cp values-secret.yaml.template ~/.config/hybrid-cloud-patterns/values-secret-multicloud-gitops.yaml
-$ ./pattern.sh make load-secrets
-
-# Create a token to be used by RHDH when connecting to the OpenShift cluster
-$ oc -n developerhub-ns create token default
-XXXXXXXX
-XXXXXXXX
-
-# Copy the output token to your values-secret.yaml.template
-# The resulting template with the above two steps will be something like:
+# Copy the output token to your values-secret.yaml.template with your github credentials
 $ cat values-secret.yaml.template
   - name: rhdh-keys
     fields:
@@ -33,12 +23,6 @@ $ cat values-secret.yaml.template
       value: XXX
     - name: GH_CLIENT_SECRET
       value: XXX
-    - name: ARGOCD_USERNAME
-      value: admin
-    - name: ARGOCD_PASSWORD
-      value: XXX
-    - name: RHDH_TEKTON_SERVICE_ACCOUNT_TOKEN
-      value: XXXX
 
 # Regenerate the vault with the secrets
 $  cp values-secret.yaml.template ~/.config/hybrid-cloud-patterns/values-secret-multicloud-gitops.yaml
