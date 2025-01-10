@@ -50,6 +50,15 @@ spec:
           ui:options:
             catalogFilter:
               kind: [User]
+    - title: Provide information about model
+      required:
+        - name
+      propertires:
+        model_name:
+          title: Model Name
+          default: granite-3-8b-instruct
+          type: string
+          description: Name of the model deployed
     - title: Provide Build Information
       required:
         - image_host
@@ -115,6 +124,7 @@ spec:
           image_host: ${{parameters.image_host}}
           image_name: ${{parameters.namespace}}/agent-hyperscalers-app
           image_tag: ${{parameters.image_tag}}
+          model_name: ${{parameters.model_name}}
         targetPath: ./tenant-gitops
     - id: publishGitops
       name: Publishing to Deployment Resource Repository

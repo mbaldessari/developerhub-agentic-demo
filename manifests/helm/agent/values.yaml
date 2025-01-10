@@ -1,6 +1,8 @@
 ---
 name: agent
 
+model_name: ${{values.model_name}}
+
 namespace: ${{values.namespace}}
 
 labels:
