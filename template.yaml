@@ -52,8 +52,8 @@ spec:
               kind: [User]
     - title: Provide information about model
       required:
-        - name
-      propertires:
+        - model_name
+      properties:
         model_name:
           title: Model Name
           default: granite-3-8b-instruct
