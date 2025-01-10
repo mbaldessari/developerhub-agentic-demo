@@ -1,10 +1,40 @@
-from langgraph import Agent, Node
-from langgraph.llms import vLLM
-from vector_db import VectorDB
+from typing import Annotated
+from typing_extensions import TypedDict
+
+from langgraph.graph import StateGraph
+from langgraph.graph.message import add_messages
+# from langgraph.llms import vLLM
+from langchain_community.llms import VLLMOpenAI
+
+
+# from vector_db import VectorDB
 from guardrails import apply_guardrails
 
+
+class LLMNode:
+    def __init__(self,  llm_endpoint, llm_token, model_name):
+        self.llm = VLLMOpenAI(
+            openai_api_key=llm_token,
+            openai_api_base=llm_endpoint,
+            model_name=model_name)
+
+    def __call__(self, state):
+        # Implement your custom logic here
+        # Access the state and perform actions
+        messages = state["messages"]
+        response = self.llm.invoke(messages)
+        return {"messages": add_messages(messages, [response])}
+
+
+class State(TypedDict):
+    # messages have the type "list".
+    # The add_messages function appends messages to the list,
+    # rather than overwriting them
+    messages: Annotated[list, add_messages]
+
+
 class AgentGraph:
-    def __init__(self, llm_endpoint, llm_token):
+    def __init__(self, llm_endpoint, llm_token, model_name):
         """
         Initialize the agent graph with vLLM and other components.
 
@@ -12,45 +42,92 @@ class AgentGraph:
             llm_endpoint (str): URL of the deployed vLLM endpoint.
             llm_token (str): Authorization token for the vLLM endpoint.
         """
-        self.vector_db = VectorDB()
-        self.llm = vLLM(endpoint=llm_endpoint, token=llm_token)
+        # self.vector_db = VectorDB()
+        self.llm = LLMNode(llm_endpoint=llm_endpoint, llm_token=llm_token,
+                           model_name=model_name)
 
-        # Define the nodes in the graph
-        self.input_guardrails = Node(apply_guardrails)
-        self.context_retrieval = Node(self.vector_db.retrieve_context)
-        self.llm_node = Node(self.call_llm)
-        self.output_guardrails = Node(apply_guardrails)
+        # Build the graph
+        graph_builder = StateGraph(State)
 
-        # Create the agent with a defined flow
-        self.agent = Agent(
-            flow=[
-                self.input_guardrails,
-                self.context_retrieval,
-                self.llm_node,
-                self.output_guardrails,
-            ]
-        )
+        # Add nodes to the graph
+        # graph_builder.add_node("input_guardrails",
+        #                        self.apply_input_guardrails)
+        # graph_builder.add_node("context_retrieval",
+        #                        self.retrieve_context)
+        graph_builder.add_node("llm", self.llm)
+        # graph_builder.add_node("output_guardrails",
+        #                        self.apply_output_guardrails)
 
-    def call_llm(self, query):
+        # Define transitions between nodes
+        # graph_builder.add_edge("input_guardrails", "context_retrieval")
+        # graph_builder.add_edge("context_retrieval", "llm")
+        # graph_builder.add_edge("llm", "output_guardrails")
+
+        # Set entry and finish points
+        # graph_builder.set_entry_point("input_guardrails")
+        # graph_builder.set_finish_point("output_guardrails")
+        graph_builder.set_entry_point("llm")
+        graph_builder.set_finish_point("llm")
+
+        # Compile the graph
+        self.agent = graph_builder.compile()
+
+    def apply_input_guardrails(self, state: State) -> State:
         """
-        Use vLLM to process the query with context.
+        Apply input guardrails to validate or preprocess the query.
 
         Args:
-            query (str): User query with context.
+            state (State): State containing the messages.
 
         Returns:
-            str: LLM-generated response.
+            State: Updated state with processed messages.
         """
-        return self.llm.generate(query, max_tokens=500)
+        state["messages"] = [apply_guardrails(msg)
+                             for msg in state["messages"]]
+        return state
 
-    def run(self, query):
+    def apply_output_guardrails(self, state: State) -> State:
         """
-        Run the agent with the given query.
+        Apply output guardrails to validate or postprocess the response.
 
         Args:
-            query (str): Input query from the user.
+            state (State): State containing the messages.
 
         Returns:
-            str: Processed response from the agent.
+            State: Updated state with processed response.
         """
-        return self.agent.run(query=query)
+        state["messages"] = [apply_guardrails(msg)
+                             for msg in state["messages"]]
+        return state
+
+    def retrieve_context(self, state: State) -> State:
+        """
+        Retrieve context from the vector database.
+
+        Args:
+            state (State): State containing the messages.
+
+        Returns:
+            State: Updated state with retrieved context added to messages.
+        """
+        query = state["messages"][-1]  # Use the last message as the query
+        context = self.vector_db.retrieve_context(query)
+        state["messages"] = add_messages(state["messages"], [context])
+        return state
+
+    def run(self, query) -> list:
+        """
+        Run the agent with the given messages.
+
+        Args:
+            messages (list): List of conversation messages.
+
+        Returns:
+            list: Updated messages with responses.
+        """
+        # initial_state = {"messages": messages}
+        # #final_state = self.agent.run(initial_input=initial_state)
+        # final_state = self.agent(initial_state)
+        response = self.agent.invoke({"messages": [query]})
+        return response["messages"][-1]
+        # return final_state["messages"]

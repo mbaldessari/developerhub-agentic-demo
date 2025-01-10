@@ -1,31 +1,18 @@
-#import gradio as gr
 import os
-from gradio import Interface, Textbox, run_interface
+
+import gradio as gr
 
 from agent_graph import AgentGraph
 
 LLM_ENDPOINT = os.getenv("LLM_ENDPOINT")
 TOKEN = os.getenv("API_KEY")
+MODEL_NAME = os.getenv("MODEL_NAME")
 
-agent = AgentGraph(llm_endpoint=LLM_ENDPOINT, llm_token=TOKEN)
+agent = AgentGraph(llm_endpoint=LLM_ENDPOINT, llm_token=TOKEN, model_name=MODEL_NAME)
 
-def run_agent(query):
+def run_agent(query, history):
     response = agent.run(query)
-    return response
-
-# def create_ui():
-#     with gr.Blocks() as ui:
-#         gr.Markdown("# Agentic Workflow UI")
-#         with gr.Row():
-#             query = gr.Textbox(label="Enter your query")
-#             response = gr.Textbox(label="Response", interactive=False)
-#         submit_button = gr.Button("Submit")
-#         submit_button.click(run_agent, inputs=[query], outputs=[response])
-#     return ui
-
+    return response.content
 
 def create_ui():
-    ui = Interface(fn=run_agent, inputs=Textbox(lines=2, label="Enter your query"),
-                   outputs=Textbox(label="Response", value="Your response here", interactive=False),
-                   submit_btn = "Send")
-    return run_interface(ui)
+    return gr.ChatInterface(fn=run_agent)
