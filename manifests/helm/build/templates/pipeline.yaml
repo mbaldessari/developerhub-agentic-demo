@@ -26,9 +26,9 @@ spec:
   tasks:
     - name: git-clone
       params:
-        - name: repo-url
+        - name: URL
           value: $(params.source-repo)
-        - name: branch-name
+        - name: REVISION
           value: $(params.source-branch)
       taskRef:
         resolver: cluster
