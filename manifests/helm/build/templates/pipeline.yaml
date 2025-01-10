@@ -31,8 +31,14 @@ spec:
         - name: branch-name
           value: $(params.source-branch)
       taskRef:
-        kind: Task
-        name: git-clone
+        resolver: cluster
+        params:
+        - name: kind
+          value: task
+        - name: name
+          value: git-clone
+        - name: namespace
+          value: openshift-pipelines
       workspaces:
         - name: shared-folder
           workspace: output
@@ -64,8 +70,14 @@ spec:
       runAfter:
         - git-clone
       taskRef:
-        kind: Task
-        name: buildah
+        resolver: cluster
+        params:
+        - name: kind
+          value: task
+        - name: name
+          value: buildah
+        - name: namespace
+          value: openshift-pipelines
       workspaces:
         - name: source
           workspace: output
