@@ -14,9 +14,38 @@ $ ./pattern.sh make install
 # Copy admin.password from secret hub-gitops-cluster at multiclod-gitops-hub namespace and replace it on values-secret.yaml
 $ cp values-secret.yaml.template ~/.config/hybrid-cloud-patterns/values-secret-multicloud-gitops.yaml
 $ ./pattern.sh make load-secrets
+
+# Create a token to be used by RHDH when connecting to the OpenShift cluster
+$ oc -n developerhub-ns create token default
+XXXXXXXX
+XXXXXXXX
+
+# Copy the output token to your values-secret.yaml.template
+# The resulting template with the above two steps will be something like:
+$ cat values-secret.yaml.template
+  - name: rhdh-keys
+    fields:
+    - name: BACKEND_SECRET
+      value: rhdh_1_2_3
+    - name: GH_ACCESS_TOKEN
+      value: XXXX
+    - name: GH_CLIENT_ID
+      value: XXX
+    - name: GH_CLIENT_SECRET
+      value: XXX
+    - name: ARGOCD_USERNAME
+      value: admin
+    - name: ARGOCD_PASSWORD
+      value: XXX
+    - name: RHDH_TEKTON_SERVICE_ACCOUNT_TOKEN
+      value: XXXX
+
+# Regenerate the vault with the secrets
+$  cp values-secret.yaml.template ~/.config/hybrid-cloud-patterns/values-secret-multicloud-gitops.yaml
+$  ./pattern.sh make load-secrets
 ```
 
-Then, you can import the template into your deployed Red Hat Developer Hub and instantiate it. It will create
+The template will be automatically imported, but you can clone it, modify it and then import the template into your deployed Red Hat Developer Hub and instantiate it. It will create
 - gitops repo with the resources being created
 - git repo with the code for the agent
 - argocd applications to deploy:
@@ -24,7 +53,7 @@ Then, you can import the template into your deployed Red Hat Developer Hub and i
   - LLM at OpenShift AI
   - Agent at OpenShift
 
-After everything is deployed, there is a need for a manual step (for now):
+After everything is deployed, there is a need for another manual step (for now):
 - Copy the token and the inference endpoint from the deployed model on OpenShift AI
 - (Alternatively you can point to a different vLLM deployment if you wish)
 - Make use of values-secret.yaml.template to create the information with it and update the vault so that the secret gets created in the agent application namespace:
