@@ -4,14 +4,16 @@ metadata:
   name: {{ .Values.name }}-pipelinerun
   labels:
     backstage.io/kubernetes-id: ${{values.component_id}}
+    tekton.dev/pipeline: {{ .Values.name }}-pipeline
 spec:
   pipelineRef:
     name: {{ .Values.name }}-pipeline
-  podTemplate:
-    securityContext:
-      fsGroup: 65532
+  taskRunTemplate:
+    serviceAccountName: pipeline
+  timeouts:
+    pipeline: 1h0m0s
   workspaces:
-  - name: shared-folder
+  - name: output
     volumeClaimTemplate:
       spec:
         accessModes:

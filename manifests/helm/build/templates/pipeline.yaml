@@ -31,29 +31,43 @@ spec:
         - name: branch-name
           value: $(params.source-branch)
       taskRef:
+        kind: Task
         name: git-clone
       workspaces:
-        - name: output
-          workspace: shared-folder
-    - name: build-and-push
+        - name: shared-folder
+          workspace: output
+    - name: buildah-zbb
       params:
         - name: IMAGE
           value: $(params.output-image)
+        - name: BUILDER_IMAGE
+          value: 'quay.io/buildah/stable:v1'
+        - name: STORAGE_DRIVER
+          value: overlay
         - name: DOCKERFILE
           value: $(params.dockerfile)
+        - name: CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: 'false'
+        - name: FORMAT
+          value: oci
+        - name: BUILD_EXTRA_ARGS
+          value: ''
+        - name: PUSH_EXTRA_ARGS
+          value: ''
+        - name: SKIP_PUSH
+          value: 'false'
+        - name: BUILD_ARGS
+          value:
+            - ''
       runAfter:
         - git-clone
       taskRef:
-        resolver: cluster
-        params:
-        - name: kind
-          value: task
-        - name: name
-          value: buildah
-        - name: namespace
-          value: openshift-pipelines
+        kind: Task
+        name: buildah
       workspaces:
-        - name: output
-          workspace: shared-folder
+        - name: source
+          workspace: output
   workspaces:
-    - name: shared-folder
+    - name: output
