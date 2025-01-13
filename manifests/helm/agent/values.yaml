@@ -22,7 +22,7 @@ image:
 
 service:
   type: ClusterIP
-  port: "8080"
+  port: 8080
   name: http
   labels:
     app: agent-app

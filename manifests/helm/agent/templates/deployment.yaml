@@ -49,7 +49,11 @@ spec:
                   name: llm-sa-secret
                   key: token
             - name: MODEL_NAME
-              value: {{ $.Values.modelName }}
+              valueFrom:
+                secretKeyRef:
+                  name: llm-sa-secret
+                  key: model_name
+              #value: {{ $.Values.modelName }}
       {{- with $.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
