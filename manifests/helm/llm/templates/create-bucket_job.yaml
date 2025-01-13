@@ -28,8 +28,8 @@ spec:
               import boto3, os
               s3 = boto3.client("s3",
                                 endpoint_url="{{ $.Values.s3.default_endpoint }}",
-                                aws_access_key_id=os.getenv("MINIO_ROOT_USER"),
-                                aws_secret_access_key=os.getenv("MINIO_ROOT_PASSWORD"))
+                                aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+                                aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"))
               bucket = '{{ $.Values.bucketSecret }}'
               print('creating models bucket')
               if bucket not in [bu["Name"] for bu in s3.list_buckets()["Buckets"]]:
@@ -37,17 +37,9 @@ spec:
               EOF
           command:
             - /bin/bash
-          env:
-            - name: MINIO_ROOT_USER
-              valueFrom:
-                secretKeyRef:
-                  name: aws-connection-{{ $.Values.bucketSecret }}
-                  key: AWS_SECRET_ACCESS_KEY
-            - name: MINIO_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: aws-connection-{{ $.Values.bucketSecret }}
-                  key: AWS_ACCESS_KEY_ID
+          envFrom:
+            - secretRef:
+                name: aws-connection-{{ $.Values.bucketSecret }}
           image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-generic-data-science-notebook:2024.1
           imagePullPolicy: IfNotPresent
           name: create-buckets
