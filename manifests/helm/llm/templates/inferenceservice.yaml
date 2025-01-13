@@ -24,10 +24,11 @@ spec:
       resources:
         limits:
           cpu: "8"
-          #memory: 24Gi
+          memory: 12Gi
           #nvidia.com/gpu: '1'
         requests:
           cpu: "4"
+          memory: 12Gi
           #nvidia.com/gpu: '1'
       runtime: {{ $.Values.name }}
       storage:
