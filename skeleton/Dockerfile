@@ -10,7 +10,7 @@ WORKDIR /app
 
 
 # Copy application files
-COPY . .
+COPY ./agent .
 
 # Copy and install Python dependencies
 #COPY requirements.txt .
