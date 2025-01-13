@@ -53,12 +53,24 @@ spec:
     - title: Provide information about model
       required:
         - model_name
+        - s3_endpoint
+        - bucket
       properties:
         model_name:
-          title: Model Name
-          default: granite-3-8b-instruct
+          title: Model Name (from HF)
+          default: ibm-granite/granite-3.1-2b-instruct
           type: string
-          description: Name of the model deployed
+          description: Name of the model to be deployed, from HF repo
+        s3_endpoint:
+          title: S3 Endpoint
+          default: http://minio-service.minio-ns.svc.cluster.local:9000
+          type: string
+          description:  S3 Endpoint to store the downloaded model from HF
+        bucket:
+          title: Bucket name
+          default: models
+          type: string
+          description: Name of the S3 bucket with the model
     - title: Provide Build Information
       required:
         - image_host
