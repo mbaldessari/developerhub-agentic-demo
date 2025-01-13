@@ -48,7 +48,7 @@ spec:
                 secretKeyRef:
                   name: llm-sa-secret
                   key: token
-            - name: model_name:
+            - name: MODEL_NAME
               value: {{ $.Values.modelName }}
       {{- with $.Values.nodeSelector }}
       nodeSelector:
