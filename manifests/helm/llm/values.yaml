@@ -7,7 +7,7 @@ description: "Agent VLLM namespace"
 
 displayName: "Agent VLLM namespace"
 
-modelStoragePath: models/${{values.model_name}}
+modelStoragePath: ibm-model
 modelName: ${{values.model_name}}
 
 secretStore:
