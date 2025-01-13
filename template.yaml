@@ -137,6 +137,8 @@ spec:
           image_name: ${{parameters.namespace}}/agent-hyperscalers-app
           image_tag: ${{parameters.image_tag}}
           model_name: ${{parameters.model_name}}
+          s3_endpoint: ${{parameters.s3_endpoint}}
+          bucket: ${{parameters.bucket}}
         targetPath: ./tenant-gitops
     - id: publishGitops
       name: Publishing to Deployment Resource Repository
