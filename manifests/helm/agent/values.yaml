@@ -1,7 +1,7 @@
 ---
 name: agent
 
-model_name: ${{values.model_name}}
+modelName: ${{values.model_name}}
 
 namespace: ${{values.namespace}}
 
