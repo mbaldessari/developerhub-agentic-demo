@@ -2,8 +2,8 @@ FROM registry.access.redhat.com/ubi9/python-311
 
 # Install system dependencies
 USER root
-RUN microdnf install -y gcc libffi-devel openssl-devel && \
-    microdnf clean all
+RUN dnf install -y gcc libffi-devel openssl-devel && \
+    dnf clean all
 
 # Set working directory
 WORKDIR /app

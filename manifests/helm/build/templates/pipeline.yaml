@@ -42,31 +42,12 @@ spec:
       workspaces:
         - name: output
           workspace: shared-folder
-    - name: buildah-zbb
+    - name: buildah-image
       params:
         - name: IMAGE
           value: $(params.output-image)
-        - name: BUILDER_IMAGE
-          value: 'quay.io/buildah/stable:v1'
-        - name: STORAGE_DRIVER
-          value: overlay
         - name: DOCKERFILE
           value: $(params.dockerfile)
-        - name: CONTEXT
-          value: .
-        - name: TLSVERIFY
-          value: 'false'
-        - name: FORMAT
-          value: oci
-        - name: BUILD_EXTRA_ARGS
-          value: ''
-        - name: PUSH_EXTRA_ARGS
-          value: ''
-        - name: SKIP_PUSH
-          value: 'false'
-        - name: BUILD_ARGS
-          value:
-            - ''
       runAfter:
         - git-clone
       taskRef:
