@@ -13,7 +13,7 @@ spec:
   timeouts:
     pipeline: 1h0m0s
   workspaces:
-  - name: output
+  - name: shared-folder
     volumeClaimTemplate:
       spec:
         accessModes:
