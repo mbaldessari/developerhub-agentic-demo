@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: upload-model-to-s3
+  namespace: {{ $.Values.namespace }}
 spec:
   selector: {}
   template:
