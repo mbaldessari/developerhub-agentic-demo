@@ -40,8 +40,8 @@ spec:
         - name: namespace
           value: openshift-pipelines
       workspaces:
-        - name: shared-folder
-          workspace: output
+        - name: output
+          workspace: shared-folder
     - name: buildah-zbb
       params:
         - name: IMAGE
@@ -80,6 +80,6 @@ spec:
           value: openshift-pipelines
       workspaces:
         - name: source
-          workspace: output
+          workspace: shared-folder
   workspaces:
-    - name: output
+    - name: shared-folder
