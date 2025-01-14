@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ${{values.component_id}}-dev
-  namespace: multicloud-gitops-hub
+  namespace: ${{values.argocd_namespace}}
   labels:
     argocd/app-name: ${{values.component_id}}-dev
   annotations:
