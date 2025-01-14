@@ -50,6 +50,10 @@ spec:
           ui:options:
             catalogFilter:
               kind: [User]
+        argocd_namespace:
+          title: ArgoCD namespace
+          type: string
+          description: Namespace for the ArgoCD instance
     - title: Provide information about model
       required:
         - model_name
@@ -157,7 +161,7 @@ spec:
       input:
         appName: ${{parameters.namespace}}-agent-hyperscalers-bootstrap
         argoInstance: main
-        namespace: multicloud-gitops-hub
+        namespace: ${{parameters.argocd_namespace}}
         repoUrl: https://github.com/${{parameters.githubOrg}}/${{parameters.namespace}}-agent-hyperscalers-gitops.git
         path: 'argocd/'
   output:
